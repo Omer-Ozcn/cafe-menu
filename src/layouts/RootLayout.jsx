@@ -1,15 +1,16 @@
-import Header from "./Header.jsx";
-import Footer from "./Footer.jsx";
-import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import BackgroundCanvas from "../components/BackgroundCanvas";
 
-export default function RootLayout() {
+export default function RootLayout({ theme, toggleTheme, children }) {
   return (
-    <div className="min-h-dvh grid grid-rows-[auto_1fr_auto]">
-      <Header />
-      <main className="max-w-5xl mx-auto w-full px-4 py-6">
-        <Outlet />
-      </main>
-      <Footer />
+    <div className={theme === "dark" ? "theme-dark dark" : "theme-light"}>
+      <BackgroundCanvas src="/images/bar.jpg" />
+      <div className="relative z-10 min-h-screen text-[var(--fg)]">
+        <Header theme={theme} toggleTheme={toggleTheme} />
+        <main id="home" className="pt-16 pb-14">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 }

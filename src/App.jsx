@@ -1,23 +1,19 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import RootLayout from "./layouts/RootLayout.jsx";
-import Home from "./pages/Home.jsx";
-import Menu from "./pages/Menu.jsx";
-import About from "./pages/About.jsx";
-import Contact from "./pages/Contact.jsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: "menu", element: <Menu /> },
-      { path: "hakkimizda", element: <About /> },
-      { path: "iletisim", element: <Contact /> },
-    ],
-  },
-]);
+import RootLayout from "./layouts/RootLayout";
+import Home from "./pages/Home";
+import Menu from "./pages/Menu";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import useTheme from "./hooks/useTheme";
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <RootLayout theme={theme} toggleTheme={toggleTheme}>
+      <Home />
+      <Menu />
+      <About />
+      <Contact />
+    </RootLayout>
+  );
 }

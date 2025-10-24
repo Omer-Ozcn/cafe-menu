@@ -1,38 +1,60 @@
-import { NavLink } from "react-router-dom";
-import ThemaToggle from "../components/Thema/ThemaToggle.jsx";
+import { Menu as MenuIcon, X } from "lucide-react";
+import { useState } from "react";
+import Container from "../components/Container";
+import ThemeToggle from "../components/ThemeToggle";
 
-function Logo(props) {
+export default function Header({ theme, toggleTheme }) {
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { id: "home", label: "Anasayfa" },
+    { id: "menu", label: "Menü" },
+    { id: "about", label: "Hakkımızda" },
+    { id: "contact", label: "İletişim" },
+  ];
+
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-      <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" strokeWidth="2" />
-    </svg>
-  );
-}
-
-export default function Header() {
-  const linkBase =
-    "px-3 py-2 rounded-md text-sm transition hover:bg-black/5 dark:hover:bg-white/10";
-  const linkActive = "bg-black/10 dark:bg-white/10 font-medium";
-
-  return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-neutral-950/80 backdrop-blur border-b border-black/5 dark:border-white/10">
-      <div className="max-w-5xl mx-auto px-4 h-14 flex items-center gap-2">
-        <NavLink to="/" className="flex items-center gap-2 mr-2">
-          <span className="inline-grid place-items-center w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white shadow-sm">
-            <Logo className="w-5 h-5" />
+    <header className="fixed inset-x-0 top-0 z-50 nav-glass border-b border-[var(--border)]">
+      <Container className="flex h-16 items-center justify-between">
+        <a href="#home" className="font-black tracking-tight">
+          <span className="font-display text-xl bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent">
+            GENPERİA
           </span>
-          <span className="font-semibold">GeoHex Café</span>
-        </NavLink>
-
-        <nav className="hidden sm:flex items-center gap-1">
-          <NavLink to="/" className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}>Anasayfa</NavLink>
-          <NavLink to="/menu" className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}>Menü</NavLink>
-          <NavLink to="/hakkimizda" className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}>Hakkımızda</NavLink>
-          <NavLink to="/iletisim" className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}>İletişim</NavLink>
+        </a>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-800 dark:text-neutral-200">
+          {links.map((l) => (
+            <a key={l.id} href={`#${l.id}`} className="hover:text-amber-600 dark:hover:text-amber-400 transition">
+              {l.label}
+            </a>
+          ))}
         </nav>
+        <div className="flex items-center gap-2">
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border dark:border-neutral-700"
+          >
+            {open ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+          </button>
+        </div>
+      </Container>
 
-        <ThemaToggle className="ml-auto" />
-      </div>
+      {open && (
+        <div className="md:hidden border-t border-[var(--border)] bg-white/70 dark:bg-neutral-900/70 backdrop-blur">
+          <Container className="flex flex-col py-3 text-sm font-medium">
+            {links.map((l) => (
+              <a
+                key={l.id}
+                href={`#${l.id}`}
+                onClick={() => setOpen(false)}
+                className="rounded-xl px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              >
+                {l.label}
+              </a>
+            ))}
+          </Container>
+        </div>
+      )}
     </header>
   );
 }
