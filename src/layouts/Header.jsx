@@ -1,73 +1,67 @@
-import { Menu as MenuIcon, X } from "lucide-react";
-import { useState } from "react";
-import Container from "../components/Container";
-import ThemeToggle from "../components/ThemeToggle";
+import React, { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import Container from '../components/ui/Container'
+import Icon from '../components/ui/Icon'
+import RightPanel from '../components/RightPanel'
+import MenuDropdown from '../components/navigation/MenuDropdown' // ⬅️ yeni
 
-export default function Header({ theme, setTheme, route }) {
-  const [open, setOpen] = useState(false);
+const linkCls = ({ isActive }) =>
+  `text-sm transition ${isActive ? 'text-white' : 'text-white/90 hover:text-white'}`
+
+export default function Header() {
+  const [open, setOpen] = useState(false)
+  const [panel, setPanel] = useState(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-lg bg-white/55 dark:bg-neutral-900/55 border-b border-[var(--border)]">
+    <header className="fixed inset-x-0 top-0 z-50 bg-black/50 backdrop-blur supports-[backdrop-filter]:bg-black/30">
       <Container className="flex h-16 items-center justify-between">
-        <a href="#home" className="font-black tracking-tight">
-          <span className="font-logo text-xl md:text-2xl bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent tracking-wide">GENPERİA</span>
-        </a>
+        <Link to="/" className="flex items-center gap-2">
+          <span className="inline-block h-8 w-8 rounded-lg bg-white/10" />
+          <span className="text-lg font-semibold tracking-wide text-white">GENPERIA</span>
+        </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-800 dark:text-neutral-200">
-          {[
-            { href: "#home", key: "home", label: "Anasayfa" },
-            { href: "#menu", key: "menu", label: "Menü" },
-            { href: "#about", key: "about", label: "Hakkımızda" },
-            { href: "#contact", key: "contact", label: "İletişim" },
-          ].map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              aria-current={route === l.key ? "page" : undefined}
-              className={`relative hover:opacity-90 transition ${
-                route === l.key ? "text-amber-700 dark:text-amber-400" : ""
-              }`}
-            >
-              {l.label}
-              {route === l.key && (
-                <span className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 w-6 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 shadow-[0_0_10px_rgba(245,158,11,.5)]" />
-              )}
-            </a>
-          ))}
+        {/* Masaüstü */}
+        <nav className="hidden items-center gap-8 md:flex">
+          <NavLink to="/" className={linkCls}>Ana Sayfa</NavLink>
+          <NavLink to="/about" className={linkCls}>Hakkımızda</NavLink>
+
+          {/* Menü linki + hover dropdown */}
+          <MenuDropdown />
+
+          <NavLink to="/contact" className={linkCls}>İletişim</NavLink>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <ThemeToggle theme={theme} setTheme={setTheme} />
-          <button
-            onClick={() => setOpen((s) => !s)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-300 hover:bg-neutral-100 active:scale-[.98] dark:border-neutral-700 dark:hover:bg-neutral-800"
-          >
-            {open ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
-          </button>
+        {/* Sağ ikonlar */}
+        <div className="flex items-center gap-3">
+          <button onClick={() => setPanel(true)} aria-label="Hızlı panel" className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"><Icon name="grid9" /></button>
+          <button onClick={() => setOpen(v => !v)} className="rounded-xl border border-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 md:hidden" aria-label="Menü">Menü</button>
         </div>
       </Container>
 
+      {/* Mobil açılır menü */}
       {open && (
-        <div className="md:hidden border-t border-[var(--border)] bg-white/70 dark:bg-neutral-900/70 backdrop-blur">
-          <Container className="flex flex-col py-3 text-sm font-medium">
-            {[
-              { href: "#home", label: "Anasayfa" },
-              { href: "#menu", label: "Menü" },
-              { href: "#about", label: "Hakkımızda" },
-              { href: "#contact", label: "İletişim" },
-            ].map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-              >
-                {l.label}
-              </a>
-            ))}
-          </Container>
+        <div className="md:hidden">
+          <div className="border-t border-white/10 bg-neutral-900/95 px-4 py-3 backdrop-blur">
+            <div className="flex flex-col gap-2">
+              <Link onClick={() => setOpen(false)} to="/" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">Ana Sayfa</Link>
+              <Link onClick={() => setOpen(false)} to="/about" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">Hakkımızda</Link>
+
+              {/* Menü + alt başlıklar */}
+              <div className="rounded-lg px-3 py-2">
+                <p className="mb-1 text-sm text-white/70">Menü</p>
+                <div className="ml-3 flex flex-col">
+                  <Link onClick={() => setOpen(false)} to="/menu?c=tatli" className="rounded px-2 py-1 text-sm text-white/80 hover:bg-white/10">Tatlı</Link>
+                  <Link onClick={() => setOpen(false)} to="/menu?c=icecek" className="rounded px-2 py-1 text-sm text-white/80 hover:bg-white/10">İçecek</Link>
+                </div>
+              </div>
+
+              <Link onClick={() => setOpen(false)} to="/contact" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">İletişim</Link>
+            </div>
+          </div>
         </div>
       )}
+
+      <RightPanel open={panel} onClose={() => setPanel(false)} />
     </header>
-  );
+  )
 }

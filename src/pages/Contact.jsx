@@ -1,45 +1,38 @@
-import Section from "../components/Section";
-import { Mail, MapPin, Phone } from "lucide-react";
-
-function ContactForm() {
-  return (
-    <form className="flex w-full max-w-xl flex-col gap-3 rounded-2xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur p-4 shadow">
-      <div className="flex flex-col gap-1">
-        <label className="text-sm text-neutral-800 dark:text-neutral-200">Ad Soyad</label>
-        <input className="rounded-xl border border-neutral-300 px-3 py-2 text-sm dark:bg-neutral-800 dark:text-white" placeholder="Adınız" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-sm text-neutral-800 dark:text-neutral-200">E-posta</label>
-        <input type="email" className="rounded-xl border border-neutral-300 px-3 py-2 text-sm dark:bg-neutral-800 dark:text-white" placeholder="ornek@mail.com" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <label className="text-sm text-neutral-800 dark:text-neutral-200">Mesaj</label>
-        <textarea rows={4} className="rounded-xl border border-neutral-300 px-3 py-2 text-sm dark:bg-neutral-800 dark:text-white" placeholder="Rezervasyon talebi veya sorunuz" />
-      </div>
-      <button type="button" className="mt-1 rounded-full bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:opacity-90 dark:bg-white dark:text-neutral-900">
-        Gönder
-      </button>
-    </form>
-  );
-}
+import React from 'react'
+import Container from '../components/ui/Container'
 
 export default function Contact() {
   return (
-    <Section id="contact" title="İletişim" subtitle="Rezervasyon ve sorular için">
-      <div className="flex flex-col gap-6 md:flex-row md:items-start">
-        <ContactForm />
-        <div className="flex flex-1 flex-col gap-3 rounded-2xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur p-4 shadow">
-          <div className="flex items-center gap-2 text-neutral-800 dark:text-neutral-200">
-            <MapPin className="h-4 w-4" /> Fevzipaşa Cad. No: 6, İstanbul
+    <section id="iletisim" className="bg-neutral-950 py-20">
+      <Container>
+        <div className="mb-10 text-center text-white">
+          <p className="mb-2 text-xs uppercase tracking-[0.25em] text-white/60">Rezervasyon & Konum</p>
+          <h2 className="text-3xl font-semibold sm:text-4xl">İletişim</h2>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 text-white">
+            <h3 className="mb-3 text-lg font-medium">Bize Yazın</h3>
+            <form className="grid gap-3">
+              <input className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30" placeholder="Ad Soyad" />
+              <input className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30" placeholder="Telefon / E-posta" />
+              <textarea className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 min-h-28" placeholder="Mesajınız" />
+              <button type="button" className="rounded-xl bg-white/90 px-5 py-2.5 text-sm font-medium text-black hover:bg-white w-fit">Gönder</button>
+            </form>
           </div>
-          <div className="flex items-center gap-2 text-neutral-800 dark:text-neutral-200">
-            <Phone className="h-4 w-4" /> 0 (212) 000 00 00
-          </div>
-          <div className="flex items-center gap-2 text-neutral-800 dark:text-neutral-200">
-            <Mail className="h-4 w-4" /> hello@genperia.com
+
+          <div className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 text-white">
+            <h3 className="mb-3 text-lg font-medium">Çalışma Saatleri & Adres</h3>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li>Hafta içi: 10:00 – 23:30</li>
+              <li>Hafta sonu: 10:00 – 01:00</li>
+              <li className="mt-4">Adres: Şehir Merkezi, Moda Cad. No: 12</li>
+              <li>Telefon: 0 (212) 000 00 00</li>
+            </ul>
+            <div className="mt-5 aspect-[16/10] w-full rounded-xl bg-gradient-to-br from-white/10 to-white/5" />
           </div>
         </div>
-      </div>
-    </Section>
-  );
+      </Container>
+    </section>
+  )
 }

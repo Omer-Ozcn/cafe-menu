@@ -1,21 +1,20 @@
-import RootLayout from "./layouts/RootLayout";
-import Home from "./pages/Home";
-import Menu from "./pages/Menu";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import { useHashRoute } from "./lib/router";
-import useTheme from "./hooks/useTheme";
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import MainLayout from './layouts/MainLayout'
+import Home from './pages/Home'
+import About from './pages/About'
+import MenuPage from './pages/Menu'
+import Contact from './pages/Contact'
 
 export default function App() {
-  const route = useHashRoute("home");
-  const { theme, setTheme } = useTheme();
-
   return (
-    <RootLayout theme={theme} setTheme={setTheme} route={route}>
-      {route === "home" && <Home />}
-      {route === "menu" && <Menu />}
-      {route === "about" && <About />}
-      {route === "contact" && <Contact />}
-    </RootLayout>
-  );
+    <MainLayout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </MainLayout>
+  )
 }

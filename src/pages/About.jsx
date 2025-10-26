@@ -1,17 +1,25 @@
-import Section from "../components/Section";
+import React from 'react'
+import Container from '../components/ui/Container'
 
 export default function About() {
   return (
-    <Section id="about" title="Hakkımızda" subtitle="Altıgen bar etrafında kaliteli zaman">
-      <div className="max-w-3xl rounded-2xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur p-6 shadow-md text-neutral-800 dark:text-neutral-200">
-        <p className="mb-3">
-          <strong className="font-display text-lg">Genperia</strong>, merkezinde özel tasarlanmış altıgen bar masası olan çağdaş bir kafe.
-        </p>
-        <p>
-          Yerel kavrum partnerleriyle çalışıyor, iklim dostu satın alma ve sezonsal menü yaklaşımını benimsiyoruz.
-          Mekânın sıcak dokusunu kahveyle birleştiriyoruz.
-        </p>
-      </div>
-    </Section>
-  );
+    <section className="py-20 bg-[linear-gradient(180deg,#0b111b_0%,#0b1324_100%)]">
+      <Container>
+        <div className="grid items-center gap-10 md:grid-cols-2">
+          <div>
+            <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+              <img src="/images/about-placeholder.jpg" alt="" className="h-full w-full object-cover opacity-90" onError={(e)=>{e.currentTarget.style.display='none'}} />
+            </div>
+          </div>
+          <div className="text-white/90">
+            <h1 className="mb-4 font-serif text-4xl font-semibold text-white">Hakkımızda</h1>
+            <div className="space-y-4 text-sm leading-relaxed text-white/70">
+              <p>Genperia; modern bar-kafe çizgisi, mavi neon yansımaları ve sade servis yaklaşımıyla şehirde yeni bir buluşma noktası.</p>
+              <p>Üçüncü nesil kahveler, sıcak/soğuk içecekler ve günlük taze gelen hazır tatlılar öne çıkar.</p>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  )
 }
