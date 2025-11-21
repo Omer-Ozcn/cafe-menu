@@ -1,29 +1,77 @@
-import React from 'react'
-import Container from '../ui/Container'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { motion } from 'framer-motion';
+import Container from '../ui/Container';
+import { Button } from '../ui/Button';
+import { IMAGES } from '../../data/constants';
 
 export default function AboutPreview() {
   return (
-    <section className="py-20 bg-[linear-gradient(180deg,#0b111b_0%,#0b1324_100%)]">
-      <Container>
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <div>
-            <div className="aspect-[5/4] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-              <img src="/images/about-placeholder.jpg" alt="" className="h-full w-full object-cover object-[50%_80%]" onError={(e)=>{e.currentTarget.style.display='none'}} />
-            </div>
-          </div>
-          <div className="text-white/90">
-            <h2 className="mb-4 font-serif text-3xl font-semibold text-white sm:text-4xl">Tatlar Bizden Keyif Sizden…</h2>
-            <p className="text-sm leading-relaxed text-white/70">
-              Loş mavi bar ışıkları ve mermer dokular arasında kahve ve tatlıda yalın bir deneyim.
-              Cheesecake & cappuccino ikilimizle tanışın.
+    <section className="py-24 bg-[#FDFBF7] relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F3EFEA] skew-x-12 translate-x-20 opacity-50" />
+      <Container className="relative z-10">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          {/* METİN */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="order-2 md:order-1"
+          >
+            <span className="text-[#C5A065] font-bold tracking-widest uppercase text-xs mb-2 block">
+              Deneyim
+            </span>
+            <h2 className="font-serif text-5xl text-[#1a1f2e] leading-tight mb-8">
+              Gecenin Rengi, <br />
+              <span className="relative inline-block">
+                Kahvenin Kokusu
+                <span className="absolute bottom-2 left-0 w-full h-3 bg-[#C5A065]/20 -z-10" />
+              </span>
+            </h2>
+            <p className="text-[#1a1f2e]/70 leading-relaxed mb-8 text-lg">
+              Genperia, sadece bir kahve dükkanı değil; mavi neon ışıkların mermer
+              dokularla dans ettiği modern bir sığınak.
             </p>
-            <div className="mt-6">
-              <Link to="/about" className="rounded-xl border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/15">Devam</Link>
+            <Button to="/about" variant="outline">
+              Hikayemiz
+            </Button>
+          </motion.div>
+
+          {/* GÖRSEL */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="order-1 md:order-2 relative flex justify-center"
+          >
+            <div
+              className="
+                w-full max-w-[720px]
+                rounded-3xl overflow-hidden 
+                shadow-2xl border border-white 
+                bg-brand-beige
+                px-4 py-4
+              "
+            >
+              <img
+                src={IMAGES.about}
+                onError={(e) => {
+                  e.target.src =
+                    'https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000';
+                }}
+                alt="Genperia Bar Counter"
+                className="
+                  w-full h-auto
+                  object-contain
+                  transition-transform duration-1000
+                  hover:scale-[1.03]
+                "
+              />
             </div>
-          </div>
+          </motion.div>
         </div>
       </Container>
     </section>
-  )
+  );
 }

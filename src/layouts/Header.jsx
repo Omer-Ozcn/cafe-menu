@@ -1,67 +1,136 @@
-import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import Container from '../components/ui/Container'
-import Icon from '../components/ui/Icon'
-import RightPanel from '../components/RightPanel'
-import MenuDropdown from '../components/navigation/MenuDropdown' // ⬅️ yeni
-
-const linkCls = ({ isActive }) =>
-  `text-sm transition ${isActive ? 'text-white' : 'text-white/90 hover:text-white'}`
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu as MenuIcon, X } from 'lucide-react';
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
-  const [panel, setPanel] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 8); // eşiği düşürdük
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const headerBg =
+    isHome && !isScrolled
+      ? 'bg-transparent'
+      : 'bg-brand-beige/95 backdrop-blur-md shadow-sm';
+
+  const textColor =
+    isHome && !isScrolled ? 'text-white' : 'text-brand-dark';
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-black/50 backdrop-blur supports-[backdrop-filter]:bg-black/30">
-      <Container className="flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="inline-block h-8 w-8 rounded-lg bg-white/10" />
-          <span className="text-lg font-semibold tracking-wide text-white">GENPERIA</span>
+    <header
+      className={`
+        fixed top-0 left-0 right-0 z-50
+        ${headerBg}
+        ${isScrolled ? 'py-2 md:py-0' : 'py-1 md:py-0'}
+        transition-[background-color,padding,box-shadow]
+        duration-200
+      `}
+    >
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        {/* LOGO (image) */}
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src="/images/brand/genperia-logo.png"
+            alt="Genperia"
+            className={`
+              h-[130px] md:h-[130px]
+              object-contain
+              select-none
+            `}
+          />
         </Link>
 
-        {/* Masaüstü */}
-        <nav className="hidden items-center gap-8 md:flex">
-          <NavLink to="/" className={linkCls}>Ana Sayfa</NavLink>
-          <NavLink to="/about" className={linkCls}>Hakkımızda</NavLink>
+        {/* DESKTOP NAV */}
+        <nav className="hidden md:flex items-center gap-10">
+          {['Ana Sayfa', 'Menü', 'Hikayemiz', 'İletişim'].map((item, index) => {
+            const path =
+              item === 'Ana Sayfa'
+                ? '/'
+                : item === 'Hikayemiz'
+                ? '/about'
+                : item === 'İletişim'
+                ? '/contact'
+                : '/menu';
 
-          {/* Menü linki + hover dropdown */}
-          <MenuDropdown />
-
-          <NavLink to="/contact" className={linkCls}>İletişim</NavLink>
+            return (
+              <NavLink
+                key={index}
+                to={path}
+                className={({ isActive }) =>
+                  `
+                  text-xs font-bold uppercase tracking-[0.2em]
+                  transition-colors duration-200
+                  hover:text-brand-gold
+                  ${isActive ? 'text-brand-gold' : textColor}
+                `
+                }
+              >
+                {item}
+              </NavLink>
+            );
+          })}
         </nav>
 
-        {/* Sağ ikonlar */}
-        <div className="flex items-center gap-3">
-          <button onClick={() => setPanel(true)} aria-label="Hızlı panel" className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30"><Icon name="grid9" /></button>
-          <button onClick={() => setOpen(v => !v)} className="rounded-xl border border-white/10 px-3 py-1.5 text-sm text-white/90 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 md:hidden" aria-label="Menü">Menü</button>
+        {/* MOBİL MENÜ BUTONU */}
+        <div className="flex items-center gap-4">
+          <button
+            className={`md:hidden ${textColor}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+          </button>
         </div>
-      </Container>
+      </div>
 
-      {/* Mobil açılır menü */}
-      {open && (
-        <div className="md:hidden">
-          <div className="border-t border-white/10 bg-neutral-900/95 px-4 py-3 backdrop-blur">
-            <div className="flex flex-col gap-2">
-              <Link onClick={() => setOpen(false)} to="/" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">Ana Sayfa</Link>
-              <Link onClick={() => setOpen(false)} to="/about" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">Hakkımızda</Link>
-
-              {/* Menü + alt başlıklar */}
-              <div className="rounded-lg px-3 py-2">
-                <p className="mb-1 text-sm text-white/70">Menü</p>
-                <div className="ml-3 flex flex-col">
-                  <Link onClick={() => setOpen(false)} to="/menu?c=tatli" className="rounded px-2 py-1 text-sm text-white/80 hover:bg-white/10">Tatlı</Link>
-                  <Link onClick={() => setOpen(false)} to="/menu?c=icecek" className="rounded px-2 py-1 text-sm text-white/80 hover:bg-white/10">İçecek</Link>
-                </div>
-              </div>
-
-              <Link onClick={() => setOpen(false)} to="/contact" className="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">İletişim</Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <RightPanel open={panel} onClose={() => setPanel(false)} />
+      {/* MOBİL MENÜ OVERLAY */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: '100vh' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="fixed inset-0 bg-[#0b1120] z-40 md:hidden pt-32 px-6"
+          >
+            <nav className="flex flex-col gap-8 text-center">
+              <Link
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-3xl text-white font-serif hover:text-[#C5A065]"
+              >
+                Ana Sayfa
+              </Link>
+              <Link
+                to="/menu"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-3xl text-white font-serif hover:text-[#C5A065]"
+              >
+                Menü
+              </Link>
+              <Link
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-3xl text-white font-serif hover:text-[#C5A065]"
+              >
+                Hikayemiz
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-3xl text-white font-serif hover:text-[#C5A065]"
+              >
+                İletişim
+              </Link>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 // src/components/RightPanel.jsx
 import React from 'react'
-import Icon from './ui/Icon'
+import Icon from './Icon' 
 
 export default function RightPanel({ open, onClose }) {
   return (

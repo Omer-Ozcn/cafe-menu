@@ -1,7 +1,7 @@
-import React from 'react'
-import HeroSection from '../components/home/HeroSection'
-import AboutPreview from '../components/home/AboutPreview'
-import TeaserSection from '../components/home/TeaserSection'
+import React from 'react';
+import HeroSection from '../components/home/HeroSection';
+import AboutPreview from '../components/home/AboutPreview';
+import TeaserSection from '../components/home/TeaserSection';
 
 export default function Home() {
   return (
@@ -10,5 +10,5 @@ export default function Home() {
       <AboutPreview />
       <TeaserSection />
     </>
-  )
+  );
 }

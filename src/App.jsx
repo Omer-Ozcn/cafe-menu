@@ -1,20 +1,21 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import MainLayout from './layouts/MainLayout'
-import Home from './pages/Home'
-import About from './pages/About'
-import MenuPage from './pages/Menu'
-import Contact from './pages/Contact'
+// src/App.jsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './layouts/Layout';
+import Home from './pages/Home';
+import Menu from './pages/Menu';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 export default function App() {
   return (
-    <MainLayout>
+    <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
-    </MainLayout>
-  )
+    </Layout>
+  );
 }

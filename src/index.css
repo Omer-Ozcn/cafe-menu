@@ -1,6 +1,60 @@
-@import "tailwindcss";
+/* 1. Google Fonts En Üstte Olmalı */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600&family=Forum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
 
-/* opsiyonel tema (v4) */
-@theme {
-  --font-serif: Georgia, "Times New Roman", serif;
+/* 2. Tailwind Standart Direktifleri */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 3. Temel Ayarlar (Base Layer) */
+@layer base {
+  html {
+    /* Sayfanın varsayılan arka planı ve yazı rengi */
+    background-color: #FDFBF7; /* brand-cream */
+    color: #2A2422;            /* brand-dark */
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Başlıklar - Serif */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+  }
+
+  /* Düz metinler - Sans-serif */
+  body {
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.6;
+  }
+}
+
+/* 4. Yardımcı Sınıflar (Utilities) */
+@layer utilities {
+  ::selection {
+    background-color: #C5A065; /* brand-gold */
+    color: #ffffff;
+  }
+
+  .font-brand {
+    font-family: "Forum", serif;
+    letter-spacing: 0.1em;
+  }
+
+  /* Scrollbar özelleştirmesi */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FDFBF7;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4A373;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2A2422;
+  }
 }

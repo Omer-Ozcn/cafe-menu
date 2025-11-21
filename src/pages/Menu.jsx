@@ -1,57 +1,62 @@
-import React, { useMemo, useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import Container from '../components/ui/Container'
-import { menuData } from '../data/menu'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Coffee, Cake } from 'lucide-react';
+import Container from '../components/ui/Container';
+import { SectionTitle } from '../components/ui/Button';
+import { MENU_DATA } from '../data/constants';
 
-const Money = ({ value }) => <span>{new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(value)}</span>
-
-const MenuItem = ({ item }) => (
-  <div className="flex items-start justify-between gap-6 rounded-2xl border border-white/10 bg-black/20 p-5">
-    <div>
-      <p className="font-medium text-white">{item.name}</p>
-      <p className="mt-1 text-sm text-white/60">{item.desc}</p>
-    </div>
-    <p className="shrink-0 text-white/80"><Money value={item.price} /></p>
-  </div>
-)
-
-export default function MenuPage() {
-  const loc = useLocation()
-  const initial = new URLSearchParams(loc.search).get('c') || 'icecek'
-  const [category, setCategory] = useState(initial)
-
-  useEffect(() => {
-    const c = new URLSearchParams(loc.search).get('c')
-    if (c && c !== category) setCategory(c)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loc.search])
-
-  const items = useMemo(
-    () => (category === 'tatli' ? menuData.tatli : [...menuData.sicak, ...menuData.soguk]),
-    [category]
-  )
-
-  const subtitle = category === 'tatli' ? 'Tatlılar' : 'İçecekler'
-
+export default function Menu() {
   return (
-    <section className="py-20 bg-[linear-gradient(180deg,#0b1324_0%,#0a0f1a_100%)]">
+    <div className="pt-40 pb-20 bg-[#FDFBF7]">
       <Container>
-        <div className="mb-10 text-center text-white">
-          <p className="mb-2 text-xs uppercase tracking-[0.25em] text-white/60">{subtitle}</p>
-          <h1 className="text-3xl font-semibold sm:text-4xl">Menü</h1>
+        <SectionTitle subtitle="Keşfet" title="Genperia Menü" />
+        <div className="space-y-20 mt-16">
+          {/* Kahveler Bölümü */}
+          <div>
+            <div className="flex items-center gap-4 mb-10">
+              <div className="p-3 bg-[#C5A065]/10 rounded-full text-[#C5A065]"><Coffee size={24}/></div>
+              <h3 className="text-3xl font-serif text-[#1a1f2e]">İmza Kahveler</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {MENU_DATA.kahve.map((item, idx) => (
+                <MenuCard key={item.id} item={item} idx={idx} />
+              ))}
+            </div>
+          </div>
+          
+          {/* Tatlılar Bölümü (Benzer yapı) */}
+           <div>
+            <div className="flex items-center gap-4 mb-10">
+               <div className="p-3 bg-[#C5A065]/10 rounded-full text-[#C5A065]"><Cake size={24}/></div>
+               <h3 className="text-3xl font-serif text-[#1a1f2e]">El Yapımı Tatlılar</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {MENU_DATA.tatli.map((item, idx) => (
+                <MenuCard key={item.id} item={item} idx={idx} />
+              ))}
+            </div>
+          </div>
         </div>
-
-        <div className="mb-8 flex justify-center gap-2">
-          <button onClick={() => setCategory('tatli')} className={`rounded-xl border px-4 py-2 text-sm border-white/15 bg-white/5 text-white/80 hover:bg-white/10 ${category==='tatli' ? 'border-white/30 bg-white/10 text-white' : ''}`}>Tatlı</button>
-          <button onClick={() => setCategory('icecek')} className={`rounded-xl border px-4 py-2 text-sm border-white/15 bg-white/5 text-white/80 hover:bg-white/10 ${category==='icecek' ? 'border-white/30 bg-white/10 text-white' : ''}`}>İçecek</button>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((i) => <MenuItem key={i.name} item={i} />)}
-        </div>
-
-        <p className="mt-8 text-center text-xs text-white/50">* Fiyatlar güncellenebilir. Alerjen bilgisi için baristalarımıza danışın.</p>
       </Container>
-    </section>
-  )
+    </div>
+  );
 }
+
+// Küçük yardımcı component
+const MenuCard = ({ item, idx }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ delay: idx * 0.1 }}
+    className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group border border-gray-100"
+  >
+    <div className="h-56 rounded-xl overflow-hidden mb-5 relative">
+      <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-sm font-bold text-[#1a1f2e] shadow-sm">
+        {item.price}
+      </div>
+    </div>
+    <h4 className="text-xl font-serif font-semibold text-[#1a1f2e] mb-2">{item.name}</h4>
+    <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+  </motion.div>
+);
